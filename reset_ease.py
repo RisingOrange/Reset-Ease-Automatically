@@ -3,7 +3,7 @@ from aqt import gui_hooks, mw
 
 from .util import set_last_run_date_to_today, today_is_not_last_run_date
 
-config = mw.addonManager.getConfig(__name__)
+from .preferences import get_preference
 
 def attempt_run():
     if today_is_not_last_run_date():
@@ -11,7 +11,7 @@ def attempt_run():
         set_last_run_date_to_today()
 
 def reset_ease_of_selected_decks_and_force_sync():
-    deck_to_user_ease = config["deck_to_ease"]
+    deck_to_user_ease = get_preference("deck_to_ease")
     if not deck_to_user_ease:
         return
     for deck_name, user_ease in deck_to_user_ease.items():
@@ -28,5 +28,6 @@ def force_upload_on_next_sync():
 
 def deck_id(deck_name):
     return DeckManager(mw.col).id_for_name(deck_name)
+
 
 gui_hooks.main_window_did_init.append(attempt_run)
