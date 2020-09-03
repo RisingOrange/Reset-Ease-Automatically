@@ -3,15 +3,7 @@ from aqt import gui_hooks, mw
 
 from .util import set_last_run_date_to_today, today_is_not_last_run_date
 
-# the ease the decks will be set to
-user_ease = 250
-
-# the decks of which the ease will be set
-deck_names = [
-    'russian movie2anki video morphmanned',
-    'russian susb2srs video morphmanned',
-    'russian 10 000 sentences easiest to hardest 2',
-]
+config = mw.addonManager.getConfig(__name__)
 
 def attempt_run():
     if today_is_not_last_run_date():
@@ -19,7 +11,10 @@ def attempt_run():
         set_last_run_date_to_today()
 
 def reset_ease_of_selected_decks_and_force_sync():
-    for deck_name in deck_names:
+    deck_to_user_ease = config["deck_to_ease"]
+    if not deck_to_user_ease:
+        return
+    for deck_name, user_ease in deck_to_user_ease.items():
         mw.col.db.execute("update cards set factor = ? where did = ?", user_ease_to_ease(user_ease), deck_id(deck_name))
     mw.reset()
 

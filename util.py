@@ -1,19 +1,16 @@
-import os
 from datetime import datetime, date
+from aqt import mw
 
-addon_path = os.path.dirname(__file__)
-last_run_date_file = os.path.join(addon_path, 'last_run_date.txt')
+config = mw.addonManager.getConfig(__name__)
 
 def today_is_not_last_run_date():
     return date.today() != last_run_date()
 
 def last_run_date():
-    if os.path.exists(last_run_date_file):
-        with open(last_run_date_file, 'r') as f:
-            return datetime.strptime(f.read(), '%Y-%m-%d').date()
-    else:
+    if config["last_run_date"] is None:
         return None
+    return datetime.strptime(config["last_run_date"], '%Y-%m-%d').date()
 
 def set_last_run_date_to_today():
-    with open(last_run_date_file, 'w') as f:
-        f.write(str(date.today()))
+    config["last_run_date"] = str(date.today())
+    mw.addonManager.writeConfig(__name__, config)
