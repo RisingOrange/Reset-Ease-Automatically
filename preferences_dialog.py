@@ -18,12 +18,13 @@ class PreferencesDialog(QDialog):
         # initialize the table model and view
         self._table_model, self._table_view = self._prepare_table_model_and_view()
 
-        table_rows = [
-            {"Deck" : deck, "Ease" : ease}
-            for deck, ease in get_preference('deck_to_ease').items()
-        ]
-        for row in table_rows:
-            self._append_row_data(row)
+        if get_preference('deck_to_ease'):
+            table_rows = [
+                {"Deck" : deck, "Ease" : ease}
+                for deck, ease in get_preference('deck_to_ease').items()
+            ]
+            for row in table_rows:
+                self._append_row_data(row)
 
         self.resize(500, 300)
         self.setWindowTitle('Reset Ease - Preferences')
@@ -40,6 +41,7 @@ class PreferencesDialog(QDialog):
         self.vbox.addLayout(hbox)
 
         # add buttons
+        self.add = make_button("Add", self._on_add, hbox)
         self.clone = make_button("Clone", self._on_clone, hbox)
         self.delete = make_button("Delete", self._on_delete, hbox)
         self.up = make_button("Up", self._on_up, hbox)
@@ -86,6 +88,10 @@ class PreferencesDialog(QDialog):
         
         set_preference('deck_to_ease', deck_to_ease)
         self.close()
+
+    def _on_add(self):
+        data = {"Deck" : mw.col.decks.allNames()[0], "Ease" : 250}
+        self._append_row_data(data)
 
     def _on_clone(self):
         data = self._table_rows()[self._current_row_idx()]
