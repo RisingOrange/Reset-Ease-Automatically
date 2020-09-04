@@ -1,3 +1,5 @@
 meta.json
 last_run_date.txt
 config.json
+.vscode/.ropeproject/objectdb
+.vscode/.ropeproject/config.py

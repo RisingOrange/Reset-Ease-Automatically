@@ -29,5 +29,5 @@ def force_upload_on_next_sync():
 def deck_id(deck_name):
     return DeckManager(mw.col).id_for_name(deck_name)
 
-
-gui_hooks.main_window_did_init.append(attempt_run)
+def register():
+    gui_hooks.main_window_did_init.append(attempt_run)

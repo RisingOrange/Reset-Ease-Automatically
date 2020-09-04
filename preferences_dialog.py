@@ -193,6 +193,6 @@ def make_button(txt, f, parent):
     parent.addWidget(b)
     return b
 
-def main():
+def show():
     mw.mm = PreferencesDialog(mw)
     mw.mm.show()
