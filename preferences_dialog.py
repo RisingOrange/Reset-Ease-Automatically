@@ -33,6 +33,11 @@ class PreferencesDialog(QDialog):
         # add spacing
         self.vbox.addSpacing(20)
 
+        label = QLabel('For each deck listed, the Ease Factor will be reset to the specified value.\
+This is done once daily on Anki startup. Afterwards on the next sync, the database has to be uploaded so the changes carry over.')
+        label.setWordWrap(True)
+        self.vbox.addWidget(label)
+
         # add table
         self.vbox.addWidget(self._table_view)
 
