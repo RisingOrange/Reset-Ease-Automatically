@@ -42,7 +42,6 @@ class PreferencesDialog(QDialog):
 
         # add buttons
         self.add = make_button("Add", self._on_add, hbox)
-        self.clone = make_button("Clone", self._on_clone, hbox)
         self.delete = make_button("Delete", self._on_delete, hbox)
         self.up = make_button("Up", self._on_up, hbox)
         self.down = make_button("Down", self._on_down, hbox)
@@ -91,10 +90,6 @@ class PreferencesDialog(QDialog):
 
     def _on_add(self):
         data = {"Deck" : mw.col.decks.allNames()[0], "Ease" : 250}
-        self._append_row_data(data)
-
-    def _on_clone(self):
-        data = self._table_rows()[self._current_row_idx()]
         self._append_row_data(data)
 
     def _on_delete(self):
