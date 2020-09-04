@@ -1,5 +1,6 @@
 from anki.decks import DeckManager
 from aqt import gui_hooks, mw
+from aqt.utils import showInfo
 
 from .util import set_last_run_date_to_today, today_is_not_last_run_date
 
@@ -10,7 +11,7 @@ def attempt_run():
         reset_ease_of_selected_decks_and_force_sync()
         set_last_run_date_to_today()
 
-def reset_ease_of_selected_decks_and_force_sync():
+def reset_ease_of_selected_decks_and_force_sync(show_message=False):
     deck_to_user_ease = get_preference("deck_to_ease")
     if not deck_to_user_ease:
         return
@@ -19,6 +20,9 @@ def reset_ease_of_selected_decks_and_force_sync():
     mw.reset()
 
     force_upload_on_next_sync()
+
+    if show_message:
+        showInfo(title="Reset Ease", text="Done")
 
 def user_ease_to_ease(user_ease):
     return user_ease * 10
