@@ -32,9 +32,9 @@ class PreferencesDialog(QDialog):
         self.vbox = QVBoxLayout(self)
 
         label = QLabel(dedent('''
-            For each deck listed, the Ease Factor will be reset to the specified value.
-            This is done once daily on Anki startup. Afterwards on the next sync, 
-            the database has to be uploaded so the changes carry over.
+            For each deck listed, the Ease Factor will be reset to the specified value when the user profile is loaded.
+            For the changes to carry over to AnkiWeb and other devices, a full upload is necessary. 
+            Because of this once a day, when you sync your collection, a dialog will show up, giving you the option to force an upload.
             '''
         ).strip().replace('\n', ' '))
         label.setWordWrap(True)
@@ -201,5 +201,5 @@ def make_button(txt, f, parent):
     return b
 
 def show():
-    mw.mm = PreferencesDialog(mw)
+    mw.mm = PreferencesDialog(mw.app.activeWindow())
     mw.mm.show()
