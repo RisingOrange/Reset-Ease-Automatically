@@ -31,16 +31,16 @@ class PreferencesDialog(QDialog):
         self.setWindowTitle('Reset Ease - Preferences')
         self.vbox = QVBoxLayout(self)
 
-        # add spacing
-        self.vbox.addSpacing(20)
-
         label = QLabel(dedent('''
             For each deck listed, the Ease Factor will be reset to the specified value.
             This is done once daily on Anki startup. Afterwards on the next sync, 
             the database has to be uploaded so the changes carry over.
             '''
-        ).strip())
+        ).strip().replace('\n', ' '))
         label.setWordWrap(True)
+        font = label.font()
+        font.setPixelSize(10)
+        label.setFont(font)
         self.vbox.addWidget(label)
 
         # add table
