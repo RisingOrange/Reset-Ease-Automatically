@@ -1,3 +1,5 @@
+from textwrap import dedent, fill
+
 import aqt.main
 from anki.lang import _
 from aqt import mw
@@ -32,8 +34,12 @@ class PreferencesDialog(QDialog):
         # add spacing
         self.vbox.addSpacing(20)
 
-        label = QLabel('For each deck listed, the Ease Factor will be reset to the specified value.\
-This is done once daily on Anki startup. Afterwards on the next sync, the database has to be uploaded so the changes carry over.')
+        label = QLabel(dedent('''
+            For each deck listed, the Ease Factor will be reset to the specified value.
+            This is done once daily on Anki startup. Afterwards on the next sync, 
+            the database has to be uploaded so the changes carry over.
+            '''
+        ).strip())
         label.setWordWrap(True)
         self.vbox.addWidget(label)
 
