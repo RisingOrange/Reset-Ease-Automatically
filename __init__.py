@@ -3,12 +3,15 @@ from aqt.utils import showInfo
 from PyQt5.QtWidgets import *
 
 from . import preferences_dialog
+from .force_sync_upload import \
+    register_to_hooks as register_force_sync_upload_to_hooks
 from .reset_ease import reset_ease
 
 
 def main():
     setup_menu()
     gui_hooks.profile_did_open.append(reset_ease)
+    register_force_sync_upload_to_hooks()
 
 def setup_menu():
     # Add "reset ease" submenu
