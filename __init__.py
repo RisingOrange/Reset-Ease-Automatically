@@ -1,11 +1,14 @@
-from aqt import mw
+from aqt import gui_hooks, mw
+from aqt.utils import showInfo
 from PyQt5.QtWidgets import *
 
-from . import preferences_dialog, ease_reset
+from . import preferences_dialog
+from .reset_ease import reset_ease
+
 
 def main():
     setup_menu()
-    ease_reset.register()
+    gui_hooks.profile_did_open.append(reset_ease)
 
 def setup_menu():
     # Add "reset ease" submenu
@@ -18,8 +21,12 @@ def setup_menu():
     reset_ease_menu.addAction(a)
 
     # Reset Ease and Force Upload on next Sync
-    a = QAction('&Reset Ease and Force Upload on next Sync', mw)
-    a.triggered.connect(lambda : ease_reset.reset_ease_of_selected_decks_and_force_sync(show_message=True))
+    a = QAction('&Reset Ease', mw)
+    a.triggered.connect(reset_ease)
     reset_ease_menu.addAction(a)
+
+def on_reset_ease_button_clicked():
+    reset_ease()
+    showInfo(title="Reset Ease", text="Done")
 
 main()

@@ -1,12 +1,11 @@
 import aqt.main
 from anki.lang import _
 from aqt import mw
-from aqt.utils import tooltip, showText
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from .preferences import get_preference, set_preference
+from .config import get_value, set_value
 
 assert isinstance(mw, aqt.main.AnkiQt)
 
@@ -18,10 +17,10 @@ class PreferencesDialog(QDialog):
         # initialize the table model and view
         self._table_model, self._table_view = self._prepare_table_model_and_view()
 
-        if get_preference('deck_to_ease'):
+        if get_value('deck_to_ease'):
             table_rows = [
                 {"Deck" : deck, "Ease" : ease}
-                for deck, ease in get_preference('deck_to_ease').items()
+                for deck, ease in get_value('deck_to_ease').items()
             ]
             for row in table_rows:
                 self._append_row_data(row)
@@ -90,7 +89,7 @@ This is done once daily on Anki startup. Afterwards on the next sync, the databa
             for row_data in self._table_rows()
         }
         
-        set_preference('deck_to_ease', deck_to_ease)
+        set_value('deck_to_ease', deck_to_ease)
         self.close()
 
     def _on_add(self):
@@ -152,8 +151,10 @@ This is done once daily on Anki startup. Afterwards on the next sync, the databa
             def prepare_deck_combo_box():
                 result = QComboBox()
                 options = mw.col.decks.allNames()
+                if row_data['Deck'] not in options:
+                    options.insert(0, row_data['Deck'])
                 result.addItems(options)
-                result.setCurrentIndex(options.index(row_data['Deck']))
+                result.setCurrentText(row_data['Deck'])
                 return result
 
             result = {}
