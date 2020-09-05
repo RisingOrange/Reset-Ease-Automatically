@@ -18,12 +18,12 @@ def setup_menu():
     reset_ease_menu = QMenu("Reset Ease", mw)
     mw.form.menuTools.addMenu(reset_ease_menu)
 
-    # Add Preferences action
+    # Add Preferences button
     a = QAction('&Preferences', mw)
     a.triggered.connect(preferences_dialog.show)
     reset_ease_menu.addAction(a)
 
-    # Reset Ease and Force Upload on next Sync
+    # Reset Ease button
     a = QAction('&Reset Ease', mw)
     a.triggered.connect(reset_ease)
     reset_ease_menu.addAction(a)
