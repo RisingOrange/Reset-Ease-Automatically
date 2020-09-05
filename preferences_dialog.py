@@ -32,9 +32,7 @@ class PreferencesDialog(QDialog):
         self.vbox = QVBoxLayout(self)
 
         label = QLabel(dedent('''
-            For each deck listed, the Ease Factor will be reset to the specified value when the user profile is loaded.
-            For the changes to carry over to AnkiWeb and other devices, a full upload is necessary. 
-            Because of this once a day, when you sync your collection, a dialog will show up, giving you the option to force an upload.
+            For each deck listed, the Ease Factor will be reset to the specified value when Anki starts / the user profile is loaded.
             '''
         ).strip().replace('\n', ' '))
         label.setWordWrap(True)
