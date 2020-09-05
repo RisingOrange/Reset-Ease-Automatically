@@ -25,7 +25,7 @@ def setup_menu():
 
     # Reset Ease button
     a = QAction('&Reset Ease', mw)
-    a.triggered.connect(reset_ease)
+    a.triggered.connect(on_reset_ease_button_clicked)
     reset_ease_menu.addAction(a)
 
 def on_reset_ease_button_clicked():
