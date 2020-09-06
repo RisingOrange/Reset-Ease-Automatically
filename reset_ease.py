@@ -32,7 +32,7 @@ def export_ease_factors(deck_id):
     
     # open file picker to store factors
     dt_now_str = str(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
-    suggested_filename = "ease_factors_" + str(deck_id) + dt_now_str
+    suggested_filename = f"ease_factors_{deck_id}_{dt_now_str}"
     export_file = getSaveFile(mw, _("Export"), "export", 
                               key = "",
                               ext = "",
