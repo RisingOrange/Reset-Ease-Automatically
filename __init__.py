@@ -3,15 +3,16 @@ from aqt.utils import showInfo
 from PyQt5.QtWidgets import *
 
 from . import preferences_dialog
-from .reset_ease import reset_ease
+from .reset_ease import add_deck_options, reset_ease
 
 
 def main():
-    setup_menu()
+    setup_toolbar_menu()
     gui_hooks.profile_did_open.append(reset_ease)
+    gui_hooks.deck_browser_will_show_options_menu.append(add_deck_options)
     mw.addonManager.setConfigAction(__name__, preferences_dialog.show)
 
-def setup_menu():
+def setup_toolbar_menu():
     # Add "reset ease" submenu
     reset_ease_menu = QMenu("Reset Ease", mw)
     mw.form.menuTools.addMenu(reset_ease_menu)

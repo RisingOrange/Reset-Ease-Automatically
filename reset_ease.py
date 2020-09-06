@@ -4,7 +4,6 @@ from ast import literal_eval
 from anki.decks import DeckManager
 from anki.lang import _
 from aqt import mw
-from aqt.gui_hooks import deck_browser_will_show_options_menu
 from aqt.utils import getFile, getSaveFile
 
 from .config import get_value
@@ -20,6 +19,15 @@ def reset_ease():
             card = mw.col.getCard(card_id)
             card.factor = user_ease_to_ease(user_ease)
             card.flush()
+
+
+def add_deck_options(menu, deck_id):
+    export_action = menu.addAction("Export Ease Factors")
+    export_action.triggered.connect(lambda _,
+                                    did=deck_id: export_ease_factors(did))
+    import_action = menu.addAction("Import Ease Factors")
+    import_action.triggered.connect(lambda _,
+                                    did=deck_id: import_ease_factors(did))
 
 
 def export_ease_factors(deck_id):
@@ -79,15 +87,3 @@ def user_ease_to_ease(user_ease):
 
 def deck_id(deck_name):
     return DeckManager(mw.col).id_for_name(deck_name)
-
-
-def add_deck_options(menu, deck_id):
-    export_action = menu.addAction("Export Ease Factors")
-    export_action.triggered.connect(lambda _,
-                                    did=deck_id: export_ease_factors(did))
-    import_action = menu.addAction("Import Ease Factors")
-    import_action.triggered.connect(lambda _,
-                                    did=deck_id: import_ease_factors(did))
-
-
-deck_browser_will_show_options_menu.append(add_deck_options)
