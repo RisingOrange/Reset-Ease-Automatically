@@ -1,11 +1,14 @@
+import datetime
+from ast import literal_eval
+
 from anki.decks import DeckManager
+from anki.lang import _
 from aqt import mw
-from .config import get_value
 from aqt.gui_hooks import deck_browser_will_show_options_menu
 from aqt.utils import getFile, getSaveFile
-import datetime
-from anki.lang import _
-from ast import literal_eval
+
+from .config import get_value
+
 
 def reset_ease():
     deck_to_user_ease = get_value("deck_to_ease")
