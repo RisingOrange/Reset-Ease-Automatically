@@ -17,6 +17,8 @@ def reset_ease():
         card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
         for card_id in card_ids:
             card = mw.col.getCard(card_id)
+            if card.factor == user_ease_to_ease(user_ease):
+                continue
             card.factor = user_ease_to_ease(user_ease)
             card.flush()
 
@@ -77,6 +79,8 @@ def import_ease_factors(deck_id, factors=None):
     card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
     for card_id in card_ids:
         card = mw.col.getCard(card_id)
+        if card.factor == factors.get(card_id, None):
+            continue
         card.factor = factors.get(card_id, card.factor)
         card.flush()
 
