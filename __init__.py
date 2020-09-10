@@ -8,8 +8,12 @@ from .reset_ease import add_deck_options, reset_ease
 
 def main():
     setup_toolbar_menu()
-    gui_hooks.profile_did_open.append(reset_ease)
+
+    gui_hooks.media_sync_did_start_or_stop.append(lambda running: reset_ease() if not running else None)
+    gui_hooks.profile_will_close.append(reset_ease)
+    
     gui_hooks.deck_browser_will_show_options_menu.append(add_deck_options)
+    
     mw.addonManager.setConfigAction(__name__, preferences_dialog.show)
 
 def setup_toolbar_menu():
