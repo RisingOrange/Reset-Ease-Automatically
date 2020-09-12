@@ -1,4 +1,3 @@
-from anki.decks import DeckManager
 from anki.lang import _
 from aqt import mw
 
@@ -24,4 +23,4 @@ def user_ease_to_ease(user_ease):
 
 
 def deck_id(deck_name):
-    return DeckManager(mw.col).id_for_name(deck_name)
+    return mw.col.decks.id_for_name(deck_name)
