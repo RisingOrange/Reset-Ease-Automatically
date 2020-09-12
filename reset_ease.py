@@ -18,7 +18,6 @@ def reset_ease():
                 continue
             card.factor = user_ease_to_ease(user_ease)
             card.flush()
-    mw.reset()
 
 
 def user_ease_to_ease(user_ease):
