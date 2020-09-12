@@ -1,4 +1,4 @@
-from textwrap import dedent, fill
+from textwrap import dedent
 
 import aqt.main
 from anki.lang import _
@@ -8,9 +8,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from .config import get_value, set_value
+from .utils import clean_up_deck_to_ease
 
 assert isinstance(mw, aqt.main.AnkiQt)
-
 
 class PreferencesDialog(QDialog):
     def __init__(self, parent=None):
@@ -19,10 +19,11 @@ class PreferencesDialog(QDialog):
         # initialize the table model and view
         self._table_model, self._table_view = self._prepare_table_model_and_view()
 
+        clean_up_deck_to_ease()
         if get_value('deck_to_ease'):
             table_rows = [
-                {"Deck" : deck, "Ease" : ease}
-                for deck, ease in get_value('deck_to_ease').items()
+                {"Deck" : deck_id, "Ease" : ease}
+                for deck_id, ease in get_value('deck_to_ease').items()
             ]
             for row in table_rows:
                 self._append_row_data(row)
@@ -97,7 +98,7 @@ class PreferencesDialog(QDialog):
         self.close()
 
     def _on_add(self):
-        data = {"Deck" : mw.col.decks.allNames()[0], "Ease" : 250}
+        data = {"Deck" : mw.col.decks.all_names_and_ids()[0].id, "Ease" : 250}
         self._append_row_data(data)
 
     def _on_delete(self):
@@ -131,7 +132,7 @@ class PreferencesDialog(QDialog):
 
         def table_view_row_to_data_row(model_row):
             result = {}
-            result['Deck'] = model_row[0].currentText()
+            result['Deck'] = mw.col.decks.id_for_name(model_row[0].currentText())
             result['Ease'] = int(model_row[1].text())
             return result
 
@@ -154,11 +155,12 @@ class PreferencesDialog(QDialog):
 
             def prepare_deck_combo_box():
                 result = QComboBox()
-                options = mw.col.decks.allNames()
-                if row_data['Deck'] not in options:
-                    options.insert(0, row_data['Deck'])
-                result.addItems(options)
-                result.setCurrentText(row_data['Deck'])
+
+                deck_names = mw.col.decks.allNames()
+                result.addItems(deck_names)
+
+                name_of_selected_deck = mw.col.decks.name(row_data['Deck'])
+                result.setCurrentText(name_of_selected_deck)
                 return result
 
             result = {}
