@@ -3,7 +3,8 @@ from aqt.utils import showInfo
 from PyQt5.QtWidgets import *
 
 from . import preferences_dialog
-from .reset_ease import add_deck_options, reset_ease
+from .reset_ease import reset_ease
+from .store_restore_ease import add_deck_options
 
 
 def main():
