@@ -3,7 +3,7 @@ from ast import literal_eval
 
 from anki.lang import _
 from aqt import mw
-from aqt.utils import getFile, getSaveFile
+from aqt.utils import getFile, getSaveFile, tooltip
 
 
 def add_deck_options(menu, deck_id):
@@ -39,7 +39,10 @@ def export_ease_factors(deck_id):
         card = mw.col.getCard(card_id)
         factors[card_id] = card.factor
     with open(export_file, 'w') as export_file_object: 
-         export_file_object.write(str(factors))
+        export_file_object.write(str(factors))
+
+    tooltip('Ease Factors were exported')
+    
 
 
 def import_ease_factors(deck_id, factors=None):
@@ -48,9 +51,6 @@ def import_ease_factors(deck_id, factors=None):
     factors provided in `factors`.
     '''
     deck_name = mw.col.decks.nameOrNone(deck_id)
-    if deck_name is None:
-        print("Deck name not found on import_ease_factors, exiting...")
-        return
     
     if factors is None:
         # open file picker to load factors
@@ -66,3 +66,5 @@ def import_ease_factors(deck_id, factors=None):
             continue
         card.factor = factors.get(card_id, card.factor)
         card.flush()
+
+    tooltip('Ease Factors were imported')
