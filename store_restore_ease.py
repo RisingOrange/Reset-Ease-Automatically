@@ -45,19 +45,22 @@ def export_ease_factors(deck_id):
     
 
 
-def import_ease_factors(deck_id, factors=None):
+def import_ease_factors(deck_id):
     '''For deck `deck_id` and `factors`--a dictionary linking card id keys to
     ease factors--set the ease factors of the cards in the deck to the ease
     factors provided in `factors`.
     '''
     deck_name = mw.col.decks.nameOrNone(deck_id)
     
-    if factors is None:
-        # open file picker to load factors
-        import_file = getFile(mw, _("Import"), None, 
-                              key = "import")
-        with open(import_file, 'r') as import_file_object:
-            factors = literal_eval(import_file_object.read())
+    # open file picker to load factors
+    import_file = getFile(mw, _("Import"), None, 
+                            key = "import")
+    
+    if not import_file:
+        return
+
+    with open(import_file, 'r') as import_file_object:
+        factors = literal_eval(import_file_object.read())
         
     card_ids = mw.col.findCards(f'deck:"{deck_name}"')
     for card_id in card_ids:
