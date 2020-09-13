@@ -11,7 +11,7 @@ def reset_ease():
     if not deck_to_user_ease:
         return
     for deck_id, user_ease in deck_to_user_ease.items():
-        card_ids = mw.col.find_cards(f'deck:{mw.col.decks.name(deck_id)}')
+        card_ids = mw.col.find_cards(f'deck:"{mw.col.decks.name(deck_id)}"')
         for card_id in card_ids:
             card = mw.col.getCard(card_id)
             if card.factor == user_ease_to_ease(user_ease):
