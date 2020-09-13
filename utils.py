@@ -5,6 +5,9 @@ from .config import get_value, set_value
 
 def clean_up_deck_to_ease():
 
+    if not get_value('deck_to_ease'):
+        return
+
     #for backwards-compatibility (previously names were stored instead of ids)
     convert_deck_names_to_ids_in_deck_to_ease()
 
