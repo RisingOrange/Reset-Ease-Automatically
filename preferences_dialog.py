@@ -102,9 +102,9 @@ class PreferencesDialog(QDialog):
         self._append_row_data(data)
 
     def _on_delete(self):
-        # do not allow to delete the last row
-        if len(self._table_rows()) == 1:
+        if len(self._table_rows()) == 0:
             return
+        
         row_to_delete = self._current_row_idx()
         self._table_model.removeRow(row_to_delete)
 
