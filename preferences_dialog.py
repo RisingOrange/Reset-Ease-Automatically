@@ -98,7 +98,10 @@ class PreferencesDialog(QDialog):
         self.close()
 
     def _on_add(self):
-        data = {"Deck" : mw.col.decks.all_names_and_ids()[0].id, "Ease" : 250}
+        if hasattr(mw.col.decks, "all_names_and_ids"):
+            data = {"Deck" : mw.col.decks.all_names_and_ids()[0].id, "Ease" : 250}
+        else:
+            data = {"Deck" : mw.col.decks.allIds()[0], "Ease" : 250}
         self._append_row_data(data)
 
     def _on_delete(self):
