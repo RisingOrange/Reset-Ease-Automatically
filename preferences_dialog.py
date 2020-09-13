@@ -98,10 +98,7 @@ class PreferencesDialog(QDialog):
         self.close()
 
     def _on_add(self):
-        if hasattr(mw.col.decks, "all_names_and_ids"):
-            data = {"Deck" : mw.col.decks.all_names_and_ids()[0].id, "Ease" : 250}
-        else:
-            data = {"Deck" : mw.col.decks.allIds()[0], "Ease" : 250}
+        data = {"Deck" : int(mw.col.decks.allIds()[0]), "Ease" : 250}
         self._append_row_data(data)
 
     def _on_delete(self):
@@ -135,7 +132,7 @@ class PreferencesDialog(QDialog):
 
         def table_view_row_to_data_row(model_row):
             result = {}
-            result['Deck'] = mw.col.decks.id_for_name(model_row[0].currentText())
+            result['Deck'] = mw.col.decks.id(model_row[0].currentText(), create=True)
             result['Ease'] = int(model_row[1].text())
             return result
 

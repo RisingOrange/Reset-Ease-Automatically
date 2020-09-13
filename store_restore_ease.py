@@ -34,7 +34,7 @@ def export_ease_factors(deck_id):
         return
 
     factors = {}
-    card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
+    card_ids = mw.col.findCards(f'deck:"{deck_name}"')
     for card_id in card_ids:
         card = mw.col.getCard(card_id)
         factors[card_id] = card.factor
@@ -59,7 +59,7 @@ def import_ease_factors(deck_id, factors=None):
         with open(import_file, 'r') as import_file_object:
             factors = literal_eval(import_file_object.read())
         
-    card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
+    card_ids = mw.col.findCards(f'deck:"{deck_name}"')
     for card_id in card_ids:
         card = mw.col.getCard(card_id)
         if card.factor == factors.get(card_id, None):
