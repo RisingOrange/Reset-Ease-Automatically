@@ -1,6 +1,6 @@
 from anki.hooks import addHook
 from aqt import mw
-from aqt.utils import showInfo
+from aqt.utils import tooltip
 from PyQt5.QtWidgets import *
 
 from . import preferences_dialog
@@ -11,7 +11,7 @@ from .store_restore_ease import add_deck_options
 def main():
     setup_toolbar_menu()
     
-    addHook('unloadProfile', reset_ease)
+    addHook('unloadProfile', reset_ease_and_show_message)
 
     addHook('showDeckOptions', add_deck_options)
     
@@ -29,11 +29,11 @@ def setup_toolbar_menu():
 
     # Reset Ease button
     a = QAction('&Reset Ease', mw)
-    a.triggered.connect(on_reset_ease_button_clicked)
+    a.triggered.connect(reset_ease_and_show_message)
     reset_ease_menu.addAction(a)
 
-def on_reset_ease_button_clicked():
+def reset_ease_and_show_message():
     reset_ease()
-    showInfo(title="Reset Ease", text="Done")
+    tooltip("Ease factors have been reset")
 
 main()
