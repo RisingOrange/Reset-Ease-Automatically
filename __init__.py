@@ -1,4 +1,7 @@
-from aqt import gui_hooks, mw
+import importlib
+
+from anki.hooks import addHook
+from aqt import mw
 from aqt.utils import showInfo
 from PyQt5.QtWidgets import *
 
@@ -10,10 +13,16 @@ from .store_restore_ease import add_deck_options
 def main():
     setup_toolbar_menu()
 
-    gui_hooks.media_sync_did_start_or_stop.append(lambda running: reset_ease() if not running else None)
-    gui_hooks.profile_will_close.append(reset_ease)
+    try:
+        gui_hooks = importlib.import_module('aqt.gui_hooks')
+    except Exception:
+        pass # older version of Anki do not have this hook, in this case do nothing
+    else:
+        gui_hooks.media_sync_did_start_or_stop.append(lambda running: reset_ease() if not running else None)
     
-    gui_hooks.deck_browser_will_show_options_menu.append(add_deck_options)
+    addHook('unloadProfile', reset_ease)
+
+    addHook('showDeckOptions', add_deck_options)
     
     mw.addonManager.setConfigAction(__name__, preferences_dialog.show)
 
