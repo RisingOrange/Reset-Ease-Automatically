@@ -34,6 +34,6 @@ def setup_toolbar_menu():
 
 def reset_ease_and_show_message():
     reset_ease()
-    tooltip("Ease factors have been reset")
+    tooltip("Ease factors have been reset", period=1200)
 
 main()
