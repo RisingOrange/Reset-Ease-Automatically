@@ -1,5 +1,3 @@
-import importlib
-
 from anki.hooks import addHook
 from aqt import mw
 from aqt.utils import showInfo
@@ -12,13 +10,6 @@ from .store_restore_ease import add_deck_options
 
 def main():
     setup_toolbar_menu()
-
-    try:
-        gui_hooks = importlib.import_module('aqt.gui_hooks')
-    except Exception:
-        pass # older version of Anki do not have this hook, in this case do nothing
-    else:
-        gui_hooks.media_sync_did_start_or_stop.append(lambda running: reset_ease() if not running else None)
     
     addHook('unloadProfile', reset_ease)
 
