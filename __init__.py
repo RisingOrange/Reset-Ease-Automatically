@@ -1,17 +1,25 @@
 from anki.hooks import addHook
 from aqt import mw
-from aqt.utils import tooltip
+from aqt.utils import showInfo, tooltip
 from PyQt5.QtWidgets import *
 
 from . import preferences_dialog
 from .reset_ease import reset_ease
 from .store_restore_ease import add_deck_options
 
+import importlib
+
 
 def main():
     setup_toolbar_menu()
     
     addHook('unloadProfile', reset_ease_and_show_message)
+
+    try:
+        gui_hooks = importlib.import_module('aqt.gui_hooks')
+        gui_hooks.sync_did_finish.append(reset_ease_and_show_message)
+    except Exception:
+        pass # Older anki versions do not have this module / hook, in this case do nothing        
 
     addHook('showDeckOptions', add_deck_options)
     
