@@ -159,8 +159,8 @@ class TableDialog(QDialog):
             self._table_view.setIndexWidget(self._table_model.index(row_idx, col_idx), widget)
 
         gui_row = self._data_row_to_gui_row(data_row)
-        for i, col_name in enumerate(self.col_names):
-            set_column(i, gui_row[col_name])
+        for i in range(len(self.col_names)):
+            set_column(i, gui_row[i])
 
     def _append_row(self, data_row):
         num_rows = len(self._rows())
