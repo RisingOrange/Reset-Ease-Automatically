@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from textwrap import dedent
 
 from anki.lang import _
@@ -5,9 +6,6 @@ from aqt import mw
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-
-from .config import get_value, set_value
-from .utils import clean_up_deck_to_ease
 
 
 class TableDialog(QDialog):
@@ -17,14 +15,10 @@ class TableDialog(QDialog):
         # initialize the table model and view
         self._table_model, self._table_view = self._prepare_table_model_and_view()
 
-        clean_up_deck_to_ease()
-        if get_value('deck_to_ease'):
-            rows = [
-                {"Deck" : deck_id, "Ease" : ease}
-                for deck_id, ease in get_value('deck_to_ease').items()
-            ]
-            for row in rows:
-                self._append_row(row)
+        rows = self._rows_at_start()
+        assert all([len(row) == len(self.col_names) for row in rows])
+        for row in rows:
+            self._append_row(row)
 
         self.resize(500, 300)
         self.setWindowTitle('Reset Ease - Preferences')
@@ -58,16 +52,40 @@ class TableDialog(QDialog):
 
         self.setLayout(self.vbox)     
 
+    @abstractmethod
+    def _rows_at_start(self):
+        pass
+
+    @abstractmethod
+    def _save_preferences(self):
+        pass
+
+    @abstractmethod
+    def _default_row(self):
+        pass
+
+    @abstractmethod
+    def _data_row_to_gui_row(self, data_row):
+        pass
+
+    @abstractmethod
+    def _gui_row_to_data_row(self, gui_row):
+        pass
+
+
     def _prepare_table_model_and_view(self):
-        table_model = QStandardItemModel(0, 2)
+        table_model = QStandardItemModel(0, len(self.col_names))
         table_view = QTableView()
         table_view.setModel(table_model)
         table_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         table_view.setSelectionMode(QAbstractItemView.SingleSelection)
-        table_model.setHeaderData(0, Qt.Horizontal, "Deck")
-        table_model.setHeaderData(1, Qt.Horizontal, "Ease")
+
+        for i, col_name in enumerate(self.col_names):
+            table_model.setHeaderData(i, Qt.Horizontal, col_name)
+
         return table_model, table_view
+
 
     def _add_apply_and_cancel_buttons(self):
         hbox = QHBoxLayout()
@@ -87,17 +105,10 @@ class TableDialog(QDialog):
         self.close()
 
     def _on_okay(self):
-        deck_to_ease = {
-            row_data['Deck'] : row_data['Ease']
-            for row_data in self._rows()
-        }
-        
-        set_value('deck_to_ease', deck_to_ease)
-        self.close()
+        self._save_preferences()
 
     def _on_add(self):
-        data = {"Deck" : int(mw.col.decks.allIds()[0]), "Ease" : 250}
-        self._append_row(data)
+        self._append_row(self._default_row())
 
     def _on_delete(self):
         if len(self._rows()) == 0:
@@ -128,12 +139,6 @@ class TableDialog(QDialog):
 
         assert hasattr(self, "_table_view")
 
-        def gui_row_to_data_row(gui_row):
-            result = {}
-            result['Deck'] = mw.col.decks.id(gui_row[0].currentText(), create=True)
-            result['Ease'] = int(gui_row[1].text())
-            return result
-
         def gui_row_at_idx(row_idx):
             return [
                 self._table_view.indexWidget(self._table_model.index(row_idx, col_idx))
@@ -141,42 +146,26 @@ class TableDialog(QDialog):
             ]
 
         return [
-            gui_row_to_data_row(gui_row_at_idx(row_idx))
+            self._gui_row_to_data_row(gui_row_at_idx(row_idx))
             for row_idx in range(self._table_view.model().rowCount())
         ]
 
-    def _set_row(self, row_idx, row_data):
+
+    def _set_row(self, row_idx, data_row):
         # creates a gui row from the data and updates the _table_view with it
         assert row_idx >= 0
-
-        def data_row_to_gui_row():
-
-            def prepare_deck_combo_box():
-                result = QComboBox()
-
-                deck_names = mw.col.decks.allNames()
-                result.addItems(deck_names)
-
-                name_of_selected_deck = mw.col.decks.name(row_data['Deck'])
-                result.setCurrentText(name_of_selected_deck)
-                return result
-
-            result = {}
-            result['deckComboBox'] = prepare_deck_combo_box()
-            result['easeEntry'] = QLineEdit(str(row_data['Ease']))
-            return result
 
         def set_column(col_idx, widget):
             self._table_view.setIndexWidget(self._table_model.index(row_idx, col_idx), widget)
 
-        gui_row = data_row_to_gui_row()
-        set_column(0, gui_row['deckComboBox'])
-        set_column(1, gui_row['easeEntry'])
+        gui_row = self._data_row_to_gui_row(data_row)
+        for i, col_name in enumerate(self.col_names):
+            set_column(i, gui_row[col_name])
 
-    def _append_row(self, row_data):
+    def _append_row(self, data_row):
         num_rows = len(self._rows())
         self._table_model.setRowCount(num_rows + 1)
-        self._set_row(num_rows, row_data)
+        self._set_row(num_rows, data_row)
 
     def _move_row_up(self, row_idx):
 
