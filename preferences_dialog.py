@@ -44,10 +44,10 @@ class PreferencesDialog(TableDialog):
         ]
 
 
-    def _save_preferences(self):
+    def _save_preferences(self, rows):
         deck_to_ease_range = {
             row_data[0] : (row_data[1], row_data[2])
-            for row_data in self._rows()
+            for row_data in rows
         }
 
         if not self._valid_ease_ranges(deck_to_ease_range):
