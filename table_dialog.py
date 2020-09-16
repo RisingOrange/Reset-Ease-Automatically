@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
 from anki.lang import _
-from aqt import mw
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
