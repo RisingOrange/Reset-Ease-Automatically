@@ -100,7 +100,7 @@ class TableDialog(QDialog):
         self.close()
 
     def _on_okay(self):
-        self._save_preferences()
+        self._save_preferences(self._rows())
 
     def _on_add(self):
         self._append_row(self._default_row())

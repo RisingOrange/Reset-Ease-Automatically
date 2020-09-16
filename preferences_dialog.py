@@ -31,10 +31,10 @@ class PreferencesDialog(TableDialog):
         else:
             return list(get_value('deck_to_ease').items())
 
-    def _save_preferences(self):
+    def _save_preferences(self, rows):
         deck_to_ease = {
             row_data[0] : row_data[1]
-            for row_data in self._rows()
+            for row_data in rows
         }
 
         set_value('deck_to_ease', deck_to_ease)
