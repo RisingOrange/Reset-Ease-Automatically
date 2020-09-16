@@ -11,7 +11,7 @@ def prepare_deck_to_ease_range():
     if not get_value('deck_to_ease_range'):
         return
 
-    # remove entries of decks that do not exist anki
+    # remove entries of decks that do not exist in anki
     cleaned = {
         deck_id : ease_range
         for deck_id, ease_range in get_value('deck_to_ease_range').items()
