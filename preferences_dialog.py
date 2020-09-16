@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 
 from .config import get_value, set_value
 from .table_dialog import TableDialog
-from .utils import clean_up_deck_to_ease
+from .utils import prepare_deck_to_ease_range
 
 
 class PreferencesDialog(TableDialog):
@@ -26,7 +26,7 @@ class PreferencesDialog(TableDialog):
 
 
     def _rows_at_start(self):
-        clean_up_deck_to_ease()
+        prepare_deck_to_ease_range()
         if not get_value('deck_to_ease_range'):
             return []
         else:
