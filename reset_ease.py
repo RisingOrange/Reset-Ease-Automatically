@@ -7,18 +7,19 @@ from .utils import clean_up_deck_to_ease
 
 def reset_ease():
     clean_up_deck_to_ease()
-    deck_to_user_ease = get_value("deck_to_ease")
-    if not deck_to_user_ease:
+    deck_to_user_ease_range = get_value("deck_to_ease_range")
+    if not deck_to_user_ease_range:
         return
-    for deck_id, user_ease in deck_to_user_ease.items():
+    for deck_id, user_ease_range in deck_to_user_ease_range.items():
+        ease_min, ease_max = [user_ease_to_ease(x) for x in user_ease_range]
         card_ids = mw.col.findCards(f'deck:"{mw.col.decks.name(deck_id)}"')
         for card_id in card_ids:
             card = mw.col.getCard(card_id)
-            if card.factor == user_ease_to_ease(user_ease):
-                continue
-            card.factor = user_ease_to_ease(user_ease)
+            if card.factor < ease_min:
+                card.factor = ease_min
+            elif card.factor > ease_max:
+                card.factor = ease_max
             card.flush()
-
 
 def user_ease_to_ease(user_ease):
     return user_ease * 10
