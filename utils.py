@@ -5,28 +5,25 @@ from .config import get_value, set_value
 
 def prepare_deck_to_ease_range():
 
-    # for backwards compatibilty
-    convert_ease_to_ease_range()
+    deck_to_ease_range = d if (d := get_value('deck_to_ease_range')) else {}
 
-    if not get_value('deck_to_ease_range'):
-        return
+    # for backwards compatibilty
+    deck_to_ease = d if (d := get_value('deck_to_ease')) else {}
+    deck_to_ease_range.update(**_to_deck_to_ease_range(deck_to_ease))
 
     # remove entries of decks that do not exist in anki
+    # and ensure the deck ids are of type int
     cleaned = {
-        deck_id : ease_range
+        int(deck_id) : ease_range
         for deck_id, ease_range in get_value('deck_to_ease_range').items()
         if str(deck_id) in mw.col.decks.allIds()
     }
     set_value('deck_to_ease_range', cleaned)
 
-def convert_ease_to_ease_range():
-
-    if not get_value('deck_to_ease'):
-        return
-
+def _to_deck_to_ease_range(deck_to_ease):
     converted = {
         deck_id : (ease, ease)
-        for deck_id, ease in get_value('deck_to_ease').items()
+        for deck_id, ease in deck_to_ease.items()
     }
-    set_value('deck_to_ease_range', converted)
+    return converted
     
