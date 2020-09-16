@@ -15,6 +15,11 @@ from .utils import clean_up_deck_to_ease
 class PreferencesDialog(TableDialog):
     
     def __init__(self, *args, **dargs):
+        self.window_title = 'Reset Ease - Preferences'
+        self.description = dedent('''
+            For each deck listed, the Ease Factor will be reset to the specified value when Anki starts / the user profile is loaded.
+            '''
+        ).strip()
         self.col_names = ['Deck', 'Ease Min', 'Ease Max']
 
         super().__init__(*args, **dargs)

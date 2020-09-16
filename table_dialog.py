@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from textwrap import dedent
 
 from anki.lang import _
 from aqt import mw
@@ -21,13 +20,10 @@ class TableDialog(QDialog):
             self._append_row(row)
 
         self.resize(500, 300)
-        self.setWindowTitle('Reset Ease - Preferences')
+        self.setWindowTitle(self.window_title)
         self.vbox = QVBoxLayout(self)
 
-        label = QLabel(dedent('''
-            For each deck listed, the Ease Factor will be reset to the specified value when Anki starts / the user profile is loaded.
-            '''
-        ).strip().replace('\n', ' '))
+        label = QLabel(self.description)
 
         label.setWordWrap(True)
         font = label.font()
