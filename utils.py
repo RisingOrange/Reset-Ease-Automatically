@@ -10,6 +10,7 @@ def prepare_deck_to_ease_range():
     # for backwards compatibilty
     deck_to_ease = d if (d := get_value('deck_to_ease')) else {}
     deck_to_ease_range.update(**_to_deck_to_ease_range(deck_to_ease))
+    set_value('deck_to_ease', None)
 
     # remove entries of decks that do not exist in anki
     # and ensure the deck ids are of type int
