@@ -17,7 +17,10 @@ class PreferencesDialog(TableDialog):
     def __init__(self, *args, **dargs):
         self.window_title = 'Reset Ease - Preferences'
         self.description = dedent('''
-            For each deck listed, the Ease Factor will be reset to the specified value when Anki starts / the user profile is loaded.
+            For each deck listed, the Ease Factor will be reset to the specified range when Anki starts / the user profile is loaded.
+            Put the same value in Ease Min and Ease Max to reset the ease factors to this value.
+            All ease factors lower than Ease Min will be set to Ease Min.
+            All ease factors higher than Ease Max will be set to Ease Max.
             '''
         ).strip()
         self.col_names = ['Deck', 'Ease Min', 'Ease Max']
