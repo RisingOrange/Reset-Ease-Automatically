@@ -16,7 +16,7 @@ def prepare_deck_to_ease_range():
     # and ensure the deck ids are of type int
     cleaned = {
         int(deck_id) : ease_range
-        for deck_id, ease_range in get_value('deck_to_ease_range').items()
+        for deck_id, ease_range in deck_to_ease_range.items()
         if str(deck_id) in mw.col.decks.allIds()
     }
     set_value('deck_to_ease_range', cleaned)
