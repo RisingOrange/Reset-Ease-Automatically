@@ -1,2 +1,9 @@
+.vscode/
+
+build/
+tools/
+ profile/
+
 meta.json
-.vscode/*
+
+src/*/__pycache__/

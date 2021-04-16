@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from .config import get_value, set_value
+from .config import get, set
 from .table_dialog import TableDialog
 from .utils import prepare_deck_to_ease_range
 
@@ -30,13 +30,13 @@ class PreferencesDialog(TableDialog):
 
     def _rows_at_start(self):
         prepare_deck_to_ease_range()
-        if not get_value('deck_to_ease_range'):
+        if not get('deck_to_ease_range'):
             return []
         else:
             return [
                 [deck_id, ease_range[0], ease_range[1]]
                 for deck_id, ease_range in
-                get_value('deck_to_ease_range').items()
+                get('deck_to_ease_range').items()
             ]
 
     def _default_row(self):
@@ -60,7 +60,7 @@ class PreferencesDialog(TableDialog):
             ''').strip())
             return
         
-        set_value('deck_to_ease_range', deck_to_ease_range)
+        set('deck_to_ease_range', deck_to_ease_range)
         self.close()
 
     def _valid_ease_ranges(self, deck_to_ease):

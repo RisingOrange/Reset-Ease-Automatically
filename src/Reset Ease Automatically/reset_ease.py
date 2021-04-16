@@ -1,13 +1,13 @@
 from anki.lang import _
 from aqt import mw
 
-from .config import get_value
+from .config import get
 from .utils import prepare_deck_to_ease_range
 
 
 def reset_ease():
     prepare_deck_to_ease_range()
-    deck_to_user_ease_range = get_value("deck_to_ease_range")
+    deck_to_user_ease_range = get("deck_to_ease_range")
     if not deck_to_user_ease_range:
         return
     for deck_id, user_ease_range in deck_to_user_ease_range.items():
