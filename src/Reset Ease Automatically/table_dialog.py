@@ -27,7 +27,7 @@ class TableDialog(QDialog):
 
         label.setWordWrap(True)
         font = label.font()
-        font.setPixelSize(10)
+        font.setPixelSize(12)
         label.setFont(font)
         self.vbox.addWidget(label)
 
