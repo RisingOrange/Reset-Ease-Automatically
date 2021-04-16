@@ -1,0 +1,11 @@
+{
+    "display_name": "Reset Ease Automatically",
+    "module_name": "Reset Ease Automatically",
+    "repo_name": "Reset Ease Automatically",
+    "ankiweb_id": "12081346",
+    "author": "RisingOrange",
+    "conflicts": [],
+    "targets": [
+        "anki21"
+    ]
+}
