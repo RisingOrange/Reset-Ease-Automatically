@@ -17,9 +17,10 @@ def reset_ease():
             card = mw.col.getCard(card_id)
             if card.factor < ease_min:
                 card.factor = ease_min
+                card.flush()
             elif card.factor > ease_max:
                 card.factor = ease_max
-            card.flush()
+                card.flush()
 
 def user_ease_to_ease(user_ease):
     return user_ease * 10
