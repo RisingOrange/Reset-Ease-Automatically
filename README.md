@@ -1,6 +1,5 @@
 # Reset-Ease-Automatically
-Resets ease factor for cards. 
-In the preferences you can set up decks and corresponding ease factor values that the cards will be reset to when Anki closes (or when the user profile is switched).
+The add-on keeps ease factors of cards in chosen decks at a preferred value (or range). It does this by resetting them when Anki gets closed (or when the user profile is switched).
 
 Link to the addon's Ankiweb page: https://ankiweb.net/shared/info/12081346
 
