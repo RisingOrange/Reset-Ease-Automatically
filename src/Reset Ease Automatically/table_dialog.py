@@ -1,10 +1,7 @@
 from abc import abstractmethod
 
 from anki.lang import _
-from aqt import mw
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from aqt.qt import *
 
 
 class TableDialog(QDialog):
@@ -46,7 +43,7 @@ class TableDialog(QDialog):
 
         self._add_apply_and_cancel_buttons()
 
-        self.setLayout(self.vbox)     
+        self.setLayout(self.vbox)
 
     @abstractmethod
     def _rows_at_start(self):
@@ -68,27 +65,25 @@ class TableDialog(QDialog):
     def _gui_row_to_data_row(self, gui_row):
         pass
 
-
     def _prepare_table_model_and_view(self):
         table_model = QStandardItemModel(0, len(self.col_names))
         table_view = QTableView()
         table_view.setModel(table_model)
-        table_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
-        table_view.setSelectionMode(QAbstractItemView.SingleSelection)
+        table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        table_view.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        table_view.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
         for i, col_name in enumerate(self.col_names):
-            table_model.setHeaderData(i, Qt.Horizontal, col_name)
+            table_model.setHeaderData(i, Qt.Orientation.Horizontal, col_name)
 
         return table_model, table_view
-
 
     def _add_apply_and_cancel_buttons(self):
         hbox = QHBoxLayout()
         self.vbox.addLayout(hbox)
 
         buttonCancel = QPushButton("&Cancel")
-        hbox.addWidget(buttonCancel, 1, Qt.AlignRight)
+        hbox.addWidget(buttonCancel, 1, Qt.AlignmentFlag.AlignRight)
         buttonCancel.setMaximumWidth(150)
         buttonCancel.clicked.connect(self._on_cancel)
 
@@ -109,7 +104,7 @@ class TableDialog(QDialog):
     def _on_delete(self):
         if len(self._rows()) == 0:
             return
-        
+
         row_to_delete = self._current_row_idx()
         self._table_model.removeRow(row_to_delete)
 
@@ -124,11 +119,9 @@ class TableDialog(QDialog):
         self._move_row_up(row_idx + 1)
         self._table_view.selectRow(row_idx + 1)
 
-
     def _current_row_idx(self):
         indexes = self._table_view.selectedIndexes()
         return 0 if len(indexes) == 0 else indexes[0].row()
-
 
     def _rows(self):
         # reads the data from the widgets in the table and returns it
@@ -146,13 +139,14 @@ class TableDialog(QDialog):
             for row_idx in range(self._table_view.model().rowCount())
         ]
 
-
     def _set_row(self, row_idx, data_row):
         # creates a gui row from the data and updates the _table_view with it
         assert row_idx >= 0
 
         def set_column(col_idx, widget):
-            self._table_view.setIndexWidget(self._table_model.index(row_idx, col_idx), widget)
+            self._table_view.setIndexWidget(
+                self._table_model.index(row_idx, col_idx), widget
+            )
 
         gui_row = self._data_row_to_gui_row(data_row)
         for i in range(len(self.col_names)):

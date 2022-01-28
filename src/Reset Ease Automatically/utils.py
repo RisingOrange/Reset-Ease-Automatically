@@ -17,7 +17,7 @@ def prepare_deck_to_ease_range():
     cleaned = {
         int(deck_id) : ease_range
         for deck_id, ease_range in deck_to_ease_range.items()
-        if str(deck_id) in mw.col.decks.allIds()
+        if str(deck_id) in mw.col.decks.all_ids()
     }
     set('deck_to_ease_range', cleaned)
 

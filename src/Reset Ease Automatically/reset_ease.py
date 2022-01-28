@@ -12,9 +12,9 @@ def reset_ease():
         return
     for deck_id, user_ease_range in deck_to_user_ease_range.items():
         ease_min, ease_max = [user_ease_to_ease(x) for x in user_ease_range]
-        card_ids = mw.col.findCards(f'deck:"{mw.col.decks.name(deck_id)}"')
+        card_ids = mw.col.find_cards(f'deck:"{mw.col.decks.name(deck_id)}"')
         for card_id in card_ids:
-            card = mw.col.getCard(card_id)
+            card = mw.col.get_card(card_id)
             if card.factor < ease_min:
                 card.factor = ease_min
                 card.flush()
