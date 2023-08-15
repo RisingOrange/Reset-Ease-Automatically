@@ -6,11 +6,12 @@ from .config import get
 from .utils import prepare_deck_to_ease_range
 
 
-def reset_ease():
+def reset_ease() -> bool:
     prepare_deck_to_ease_range()
     deck_to_user_ease_range = get("deck_to_ease_range")
     if not deck_to_user_ease_range:
-        return
+        return False
+
     for deck_id, user_ease_range in deck_to_user_ease_range.items():
         ease_min, ease_max = [user_ease_to_ease(x) for x in user_ease_range]
         card_ids = mw.col.find_cards(f'deck:"{mw.col.decks.name(deck_id)}"')
@@ -28,6 +29,7 @@ def reset_ease():
             elif card.factor > ease_max:
                 card.factor = ease_max
                 card.flush()
+    return True
 
 
 def user_ease_to_ease(user_ease):
